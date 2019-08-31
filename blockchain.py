@@ -154,25 +154,13 @@ class Blockchain:
         block_string = json.dumps(block, sort_keys=True).encode()
         return hashlib.sha256(block_string).hexdigest()
 
-    def proof_of_work(self, last_block):
-        """
-        Simple Proof of Work Algorithm:
-
-         - Find a number p' such that hash(pp') contains leading 4 zeroes
-         - Where p is the previous proof, and p' is the new proof
-         
-        :param last_block: <dict> last Block
-        :return: <int>
-        """
-
-        last_proof = last_block['proof']
-        last_hash = self.hash(last_block)
-
+    def proof_of_work(self):
         proof = 0
         while self.valid_proof(last_proof, proof, last_hash) is False:
             proof += 1
 
         return proof
+        
 
     @staticmethod
     def valid_proof(last_proof, proof, last_hash):
@@ -203,10 +191,6 @@ blockchain = Blockchain()
 
 @app.route('/mine', methods=['GET'])
 def mine():
-    # We run the proof of work algorithm to get the next proof...
-    last_block = blockchain.last_block
-    proof = blockchain.proof_of_work(last_block)
-
     # We must receive a reward for finding the proof.
     # The sender is "0" to signify that this node has mined a new coin.
     blockchain.new_transaction(
@@ -240,7 +224,7 @@ def new_transaction():
         return jsonify(response), 201
     else:
         return render_template("transaction.html")
-
+d
 
 @app.route('/chain', methods=['GET'])
 def full_chain():
