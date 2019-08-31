@@ -5,7 +5,7 @@ from urllib.parse import urlparse
 from uuid import uuid4
 
 import requests
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 
 
 class Blockchain:
@@ -288,6 +288,12 @@ def consensus():
         }
 
     return jsonify(response), 200
+
+
+@app.route('/see_chain', methods=['GET'])
+def see_chain():
+    chain=blockchain.chain
+    return render_template("see_chain.html", chain=chain)
 
 
 if __name__ == '__main__':

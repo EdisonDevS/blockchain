@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+
+    {% for block in chain %}
+        <div class="container" style="background-color: lightblue; margin-top: 20px; padding-top: 10px; padding-bottom: 10px">
+            
+            <!-- indice del bloque -->
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-4">
+                    <label for="block_index">
+                        Block index
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input class="form-control" type="text" name="block_index" value="{{ block['index'] }}">
+                </div>
+            </div>
+
+            <!-- Hash del bloque anterior -->
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-4">
+                    <label for="previous_hash">
+                        Previous hash
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input class="form-control" type="text" name="previous_hash" value="{{ block['previous_hash'] }}">
+                </div>
+            </div>
+            
+            <!-- prueba -->
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-4">
+                    <label for="proof">
+                        Proof
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <input class="form-control" type="text" name="proof" value="{{ block['proof'] }}">
+                </div>
+            </div>
+
+            <!-- transacciones -->
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-4">
+                    <label for="transactions">
+                        Transactions
+                    </label>
+                </div>
+                <div class="col-md-8">
+                    <textarea class="form-control" name="transactions">
+                        {% if not block['transactions'] %}
+                            No se encontraron transacciones en este bloque
+                        {% else %}
+                            {% for transaction in block['transactions'] %}
+                                {{ transaction }}<br>
+                            {% endfor %}
+                        {% endif %}
+                    </textarea>
+                </div>
+            </div>
+
+            
+            
+        </div>
+    {% endfor %}
+    
+{% endblock %}
