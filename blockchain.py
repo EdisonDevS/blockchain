@@ -198,7 +198,7 @@ def mine():
         'proof': block['proof'],
         'previous_hash': block['previous_hash'],
     }
-    return jsonify(response), 200
+    return redirect("/see_chain")
 
 
 @app.route('/transactions/new', methods=['GET','POST'])
@@ -209,7 +209,7 @@ def new_transaction():
         index = blockchain.new_transaction(request.form['sender'], request.form['recipient'], request.form['amount'])
 
         response = {'message': f'Transaction will be added to Block {index}'}
-        return jsonify(response), 201
+        return render_template("transaction.html")
     else:
         return render_template("transaction.html")
 
