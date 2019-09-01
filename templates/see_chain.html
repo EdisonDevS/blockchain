@@ -48,15 +48,28 @@
                     </label>
                 </div>
                 <div class="col-md-8">
-                    <textarea class="form-control" name="transactions">
                         {% if not block['transactions'] %}
                             No se encontraron transacciones en este bloque
                         {% else %}
-                            {% for transaction in block['transactions'] %}
-                                {{ transaction }}
-                            {% endfor %}
+                            <table class="table table-dark table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Sender</th>
+                                        <th>Recipient</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for transaction in block['transactions'] %}
+                                    <tr>
+                                        <td>{{ transaction['sender'] }}</td>
+                                        <td>{{ transaction['recipient'] }}</td>
+                                        <td>{{ transaction['amount'] }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                         {% endif %}
-                    </textarea>
                 </div>
             </div>
 

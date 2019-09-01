@@ -15,7 +15,7 @@ class Blockchain:
         self.nodes = set()
 
         # Create the genesis block
-        self.new_block(previous_hash='1', proof=100)
+        self.new_block(previous_hash='0000000000000000000000000000000000000000000000000000000000000000')
 
     def register_node(self, address):
         """
@@ -98,28 +98,50 @@ class Blockchain:
 
         return False
 
-    def new_block(self, proof, previous_hash):
-        """
-        Create a new Block in the Blockchain
-
-        :param proof: The proof given by the Proof of Work algorithm
-        :param previous_hash: Hash of previous Block
-        :return: New Block
-        """
-
-        block = {
-            'index': len(self.chain) + 1,
-            'timestamp': time(),
-            'transactions': self.current_transactions,
-            'proof': proof,
-            'previous_hash': previous_hash or self.hash(self.chain[-1]),
-        }
-
+    def new_block(self, previous_hash):
+        
+        block = self.proof_of_work(previous_hash)
+        
         # Reset the current list of transactions
         self.current_transactions = []
 
         self.chain.append(block)
         return block
+
+
+    def proof_of_work(self, previous_hash):
+        proof=0
+
+        timestamp=time()
+
+        block = {
+            'index': len(self.chain) + 1,
+            'timestamp': timestamp,
+            'transactions': self.current_transactions,
+            'proof': proof,
+            'previous_hash': previous_hash or self.hash(self.chain[-1]),
+        }
+
+        block_string = json.dumps(block, sort_keys=True).encode()
+        hash = hashlib.sha256(block_string).hexdigest()
+
+        while not hash[:4]=="0000":
+            proof += 1
+
+            block = {
+                'index': len(self.chain) + 1,
+                'timestamp': timestamp,
+                'transactions': self.current_transactions,
+                'proof': proof,
+                'previous_hash': previous_hash,
+            }
+
+            block_string = json.dumps(block, sort_keys=True).encode()
+            hash = hashlib.sha256(block_string).hexdigest()
+
+        return block
+
+
 
     def new_transaction(self, sender, recipient, amount):
         """
@@ -138,45 +160,10 @@ class Blockchain:
 
         return self.last_block['index'] + 1
 
+
     @property
     def last_block(self):
         return self.chain[-1]
-
-    @staticmethod
-    def hash(block):
-        """
-        Creates a SHA-256 hash of a Block
-
-        :param block: Block
-        """
-
-        # We must make sure that the Dictionary is Ordered, or we'll have inconsistent hashes
-        block_string = json.dumps(block, sort_keys=True).encode()
-        return hashlib.sha256(block_string).hexdigest()
-
-    def proof_of_work(self):
-        proof = 0
-        while self.valid_proof(last_proof, proof, last_hash) is False:
-            proof += 1
-
-        return proof
-        
-
-    @staticmethod
-    def valid_proof(last_proof, proof, last_hash):
-        """
-        Validates the Proof
-
-        :param last_proof: <int> Previous Proof
-        :param proof: <int> Current Proof
-        :param last_hash: <str> The hash of the Previous Block
-        :return: <bool> True if correct, False if not.
-
-        """
-
-        guess = f'{last_proof}{proof}{last_hash}'.encode()
-        guess_hash = hashlib.sha256(guess).hexdigest()
-        return guess_hash[:4] == "0000"
 
 
 # Instantiate the Node
@@ -200,8 +187,9 @@ def mine():
     )
 
     # Forge the new Block by adding it to the chain
-    previous_hash = blockchain.hash(last_block)
-    block = blockchain.new_block(proof, previous_hash)
+    last_block_string = json.dumps(blockchain.last_block, sort_keys=True).encode()
+    previous_hash = hashlib.sha256(last_block_string).hexdigest()
+    block = blockchain.new_block(previous_hash)
 
     response = {
         'message': "New Block Forged",
@@ -224,7 +212,7 @@ def new_transaction():
         return jsonify(response), 201
     else:
         return render_template("transaction.html")
-d
+
 
 @app.route('/chain', methods=['GET'])
 def full_chain():
