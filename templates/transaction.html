@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="container" style="background-color: lightblue; margin-top: 20px; padding-top: 10px; padding-bottom: 10px">
+<div class="container" style="background-color: #233237; margin-top: 20px; padding-top: 10px; padding-bottom: 10px">
 
 	<form method="POST" action="/transactions/new">
 		<!-- remitente -->
 	    <div class="row" style="margin-top: 10px">
 	        <div class="col-md-4">
-	            <label for="sender">
+	            <label for="sender" style="color: #EAC67A">
 	                Sender
 	            </label>
 	        </div>
@@ -19,7 +19,7 @@
 	    <!-- receptor -->
 	    <div class="row" style="margin-top: 10px">
 	        <div class="col-md-4">
-	            <label for="recipient">
+	            <label for="recipient" style="color: #EAC67A">
 	                Recipient
 	            </label>
 	        </div>
@@ -31,7 +31,7 @@
 		<!-- monto -->
 	    <div class="row" style="margin-top: 10px">
 	        <div class="col-md-4">
-	            <label for="amount">
+	            <label for="amount" style="color: #EAC67A">
 	                Amount
 	            </label>
 	        </div>
@@ -41,8 +41,9 @@
 	    </div>
 
 		<div style="margin-top: 10px">
-			<button type="submit" class="btn btn-primary btn-block">
+			<button type="submit" class="btn btn-block" style="background-color: #984B43"><p style="color: #EAC67A">
 		    	Generar transacción
+		    </p>
 			</button>	
 		</div>
 	    

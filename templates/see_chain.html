@@ -2,12 +2,12 @@
 {% block content %}
 
     {% for block in chain %}
-        <div class="container" style="background-color: lightblue; margin-top: 20px; padding-top: 10px; padding-bottom: 10px">
+        <div class="container" style="background-color: #233237; margin-top: 20px; padding-top: 10px; padding-bottom: 10px">
             
             <!-- indice del bloque -->
             <div class="row" style="margin-top: 10px">
                 <div class="col-md-4">
-                    <label for="block_index">
+                    <label for="block_index" style="color: #EAC67A">
                         Block index
                     </label>
                 </div>
@@ -19,7 +19,7 @@
             <!-- Hash del bloque anterior -->
             <div class="row" style="margin-top: 10px">
                 <div class="col-md-4">
-                    <label for="previous_hash">
+                    <label for="previous_hash" style="color: #EAC67A">
                         Previous hash
                     </label>
                 </div>
@@ -31,7 +31,7 @@
             <!-- prueba -->
             <div class="row" style="margin-top: 10px">
                 <div class="col-md-4">
-                    <label for="proof">
+                    <label for="proof" style="color: #EAC67A">
                         Nounce
                     </label>
                 </div>
@@ -43,13 +43,13 @@
             <!-- transacciones -->
             <div class="row" style="margin-top: 10px">
                 <div class="col-md-4">
-                    <label for="transactions">
+                    <label for="transactions" style="color: #EAC67A">
                         Transactions
                     </label>
                 </div>
                 <div class="col-md-8">
                         {% if not block['transactions'] %}
-                            No se encontraron transacciones en este bloque
+                            <p style="color: #EAC67A">No se encontraron transacciones en este bloque</p>
                         {% else %}
                             <table class="table table-dark table-striped">
                                 <thead>
